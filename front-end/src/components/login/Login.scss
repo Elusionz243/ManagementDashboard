@@ -1,0 +1,32 @@
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10rem;
+
+  &__card {
+    border: 1px solid #000;
+    border-radius: 1rem;
+    display: grid;
+    padding: 1.5rem;
+    width: 30vw;
+    gap: 0.5rem;
+  }
+
+  &__card-title {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  &__card-btn {
+    margin-top: 1rem;
+  }
+
+  .form-label {
+    font-size: 1.1rem;
+  }
+
+  label {
+    margin-bottom: 0.25rem;
+  }
+}
