@@ -1,8 +1,16 @@
 import { useState } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import "./App.scss";
 
+import Login from "./components/login/Login";
+import Home from "./components/home/Home";
+
+import Error from "./components/error/Error";
+import Header from "./components/header/Header";
+
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
   const [formData, setFormData] = useState({});
   const mimicAccount = {
     username: "jon",
@@ -10,47 +18,39 @@ function App() {
     password: "password",
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (
       formData.username === mimicAccount.username ||
       formData.username === mimicAccount.email
     ) {
       if (formData.password === mimicAccount.password) {
+        setLoggedIn(!loggedIn);
         return alert("Logged in");
       }
     }
     alert("Incorrect username, email, or password");
   };
 
-  const handleChange = (e) => {
-    if (e.target.value === "") return;
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const router = createBrowserRouter([
+    {
+      path: "/login",
+      element: (
+        <Login
+          loggedIn={loggedIn}
+          handleLogin={handleLogin}
+          formData={formData}
+          setFormData={setFormData}
+        />
+      ),
+    },
+    { path: "/", element: <Home />, errorElement: <Error /> },
+  ]);
+
   return (
-    <div className="App">
-      <form onSubmit={handleLogin} className="form">
-        <label htmlFor="username" className="form-label">
-          Username/Email:
-          <input
-            type="text"
-            name="username"
-            className="form-control"
-            onChange={handleChange}
-            value={formData.username || ""}
-          />
-        </label>
-        <label htmlFor="password" className="form-label">
-          Password:
-          <input
-            type="password"
-            name="password"
-            className="form-control"
-            onChange={handleChange}
-          />
-        </label>
-        <button>Login / Sign up</button>
-      </form>
+    <div>
+      <Header loggedIn={loggedIn} handleLogin={handleLogin} />
+      <RouterProvider router={router} />
     </div>
   );
 }
